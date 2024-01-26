@@ -11,12 +11,12 @@ namespace BagageSortering
 {
     internal class SortingMachine
     {
-        private Gates[] _gates;
+        private Buffer[] _gates;
         
         private Buffer _queue;
         private TextBox _box;
         private bool _open = true;
-        public Check_In(Buffer queue, Gates[] gates, TextBox box)
+        public SortingMachine(Buffer queue, Buffer[] gates, TextBox box)
         {
             _queue = queue;
             _box = box;
@@ -26,7 +26,9 @@ namespace BagageSortering
         {         
             while (_open)
             {
-                _queue.Split(Gates[_queue.Next()]);                              
+                Bagage bagage = _queue.Next();
+                _box.WriteAt("", ConsoleColor.Yellow);
+                _queue.Split(_gates[bagage.Gate]);                              
             }
         }
 

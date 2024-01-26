@@ -49,19 +49,18 @@ namespace BagageSortering
                 }
             }
         }
-        public Bagage Next(TextBox box)
+        public Bagage Next()
         {
             lock (_lock)
             {
                 while (_queue.Count <= 0)
                 {
-                    box.WriteAt("Split Waiting", ConsoleColor.DarkRed);
                     Monitor.Pulse(_lock);
                     Monitor.Wait(_lock);
                 }
-                Bagage beverage;
-                beverage = _queue.Peek();
-                return beverage;
+                Bagage bagage;
+                bagage = _queue.Peek();
+                return bagage;
             }
         }
         public Bagage Consume()
