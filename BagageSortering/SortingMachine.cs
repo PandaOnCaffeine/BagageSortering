@@ -12,7 +12,7 @@ namespace BagageSortering
     internal class SortingMachine
     {
         private Buffer[] _gates;
-        
+        private Buffer[] _checkIns;
         private Buffer _queue;
         private TextBox _box;
         private bool _open = true;

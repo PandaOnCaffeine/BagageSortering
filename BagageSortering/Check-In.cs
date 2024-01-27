@@ -16,10 +16,12 @@ namespace BagageSortering
         private TextBox _box;
         private Random _random = new Random();
         private bool _open = true;
-        public Check_In(Buffer queue, TextBox box)
+        private Buffer _sorting;
+        public Check_In(Buffer queue, TextBox box, Buffer sortingQueue)
         {
             _queue = queue;
             _box = box;
+            _sorting = sortingQueue;
         }
         public void Run()
         {

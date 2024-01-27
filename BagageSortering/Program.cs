@@ -28,32 +28,43 @@ namespace BagageSortering
                 // Maximize the console window
                 ShowWindow(consoleHandle, SW_MAXIMIZE);
             }
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
 
-
-
-
-
-
+            int checkInsAmount = 3;
+            Check_In[] checkIns = new Check_In[checkInsAmount];
+            Thread[] checkInsThreads = new Thread[checkInsAmount];
             object writerLock = new object();
 
-            TextBox checkInBox = new TextBox("Check-In", 60, 10, 3, 2, writerLock);
-            TextBox sortingBox = new TextBox("Check-In", 60, 10, 3, 2, writerLock);
+            int y = 2;
+            for (int i = 1; i < checkIns.Length + 1; i++)
+            {
+                checkIns[i - 1] = new Check_In(new Buffer($"Check In {i}", 10), new TextBox($"Box {i}", 60, 10, 3,y, writerLock));
+                checkInsThreads[i - 1] = new Thread(new ThreadStart(checkIns[i - 1].Run));
+                checkInsThreads[i - 1].Start();
+                y += 14;
+            }
 
 
-            Buffer checkIn1Buffer = new Buffer("Nr 1", 10);
 
-            Check_In CheckIn1 = new Check_In(checkIn1Buffer, checkInBox);
 
-            Thread CheckIn1Thread = new Thread(new ThreadStart(CheckIn1.Run));
 
-            CheckIn1Thread.Start();
+            //TextBox checkInBox = new TextBox("Check-In", 60, 10, 3, 2, writerLock);
+            //TextBox sortingBox = new TextBox("Check-In", 60, 10, 3, 2, writerLock);
 
-            Console.ReadKey();
 
-            CheckIn1.Stop();
+            //Buffer checkIn1Buffer = new Buffer("Nr 1", 10);
 
-            CheckIn1Thread.Join();
+            //Check_In CheckIn1 = new Check_In(checkIn1Buffer, checkInBox);
+
+            //Thread CheckIn1Thread = new Thread(new ThreadStart(CheckIn1.Run));
+
+            //CheckIn1Thread.Start();
+
+            //Console.ReadKey();
+
+            //CheckIn1.Stop();
+
+            //CheckIn1Thread.Join();
 
             Console.ReadLine();
         }

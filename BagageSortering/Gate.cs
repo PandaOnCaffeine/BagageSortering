@@ -17,5 +17,14 @@ namespace BagageSortering
             _queue = queue;
             _box = box;
         }
+        public void open()
+        {
+            while (_open)
+            {
+                Bagage bagage = _queue.Consume();
+                _box.WriteAt("test", ConsoleColor.DarkBlue);
+            }
+        }
+        public void close() { }
     }
 }
