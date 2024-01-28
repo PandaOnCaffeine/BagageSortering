@@ -96,13 +96,13 @@ namespace BagageSortering
                 for (int i = 0; i < maxHeight; i++)
                 {
                     Console.SetCursorPosition(_x, _y + i);
-                    Console.Write(new string(' ', maxWidth));
+                    Console.Write(new string(' ', maxWidth - 1));
                 }
 
                 // Draw the updated lines
                 for (int i = 0; i < lines.Count; i++)
                 {
-                    Console.SetCursorPosition(_x, _y + i);
+                    Console.SetCursorPosition(_x + 1, _y + i);
                     Console.Write(lines[i]);
                 }
 
@@ -115,6 +115,25 @@ namespace BagageSortering
                 Monitor.Exit(_lock);
             }
 
+        }
+        public void RemoveBox()
+        {
+            try
+            {
+                Monitor.Enter(_lock);
+
+                //Remove box and all that was in it
+                for (int i = 0; i < maxHeight + 2; i++)
+                {
+                    Console.SetCursorPosition(_x - 1, _y - 1 + i);
+                    Console.Write(new string(' ', maxWidth + 2));
+                }
+                Console.ResetColor();
+            }
+            finally
+            {
+                Monitor.Exit(_lock);
+            }
         }
     }
 }

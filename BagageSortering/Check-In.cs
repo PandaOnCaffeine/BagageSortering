@@ -18,21 +18,23 @@ namespace BagageSortering
         private bool _open = true;
         private Buffer _sorting;
         private int _checkIns;
-        private int _key;
-        private object _keyLock;
-        public Check_In(Buffer queue, TextBox box, Buffer sorting, int gatesAmount, int key, object keyLock)
+        private int _key = 1;
+        private ManualResetEventSlim _test;
+        public Check_In(Buffer queue, TextBox box, Buffer sorting, int gatesAmount, ManualResetEventSlim test)
         {
             _queue = queue;
             _box = box;
             _sorting = sorting;
             _checkIns = gatesAmount;
-            _key = key;
-            _keyLock = keyLock;
+            _test = test;
         }
         public void Run()
         {
             while (_open)
             {
+                // Check if the thread should be paused
+                _test.Wait();
+
                 int amount = _random.Next(1, 3);
                 Person person = new Person(_nameGen, amount);
 
@@ -42,6 +44,7 @@ namespace BagageSortering
                 Thread.Sleep(300);
 
             }
+            _box.RemoveBox();
         }
         public void Stop()
         {
@@ -62,12 +65,9 @@ namespace BagageSortering
             int randomNr = _random.Next(0, _checkIns);
             for (int i = 0; i < person.BagageAmount; i++)
             {
-                Bagage bagage = new Bagage(person.Name, randomNr, $"{_queue.Name}-{_key}");
+                Bagage bagage = new Bagage(person.Name, randomNr, $"{_queue.Name}|{_key}");
                 _queue.Produce(bagage);
-                lock (_keyLock)
-                {
-                    _key++;
-                }
+                _key++;
             }
             _box.WriteAt($"Bags:{person.BagageAmount}| Gate:{randomNr + 1}| {person.Name}", ConsoleColor.Green);
         }

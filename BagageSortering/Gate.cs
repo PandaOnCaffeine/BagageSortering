@@ -26,7 +26,11 @@ namespace BagageSortering
                 _box.WriteAt($"Gate: {bagage.Gate + 1} | BagageNr: {bagage.Key} | {bagage.Name}", ConsoleColor.DarkBlue);
                 Thread.Sleep(100);
             }
+            _box.RemoveBox();
         }
-        public void close() { }
+        public void close()
+        {
+            _open = false;
+        }
     }
 }
