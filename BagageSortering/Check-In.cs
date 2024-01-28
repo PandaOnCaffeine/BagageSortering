@@ -17,23 +17,30 @@ namespace BagageSortering
         private Random _random = new Random();
         private bool _open = true;
         private Buffer _sorting;
-        public Check_In(Buffer queue, TextBox box, Buffer sortingQueue)
+        private int _checkIns;
+        private int _key;
+        private object _keyLock;
+        public Check_In(Buffer queue, TextBox box, Buffer sorting, int gatesAmount, int key, object keyLock)
         {
             _queue = queue;
             _box = box;
-            _sorting = sortingQueue;
+            _sorting = sorting;
+            _checkIns = gatesAmount;
+            _key = key;
+            _keyLock = keyLock;
         }
         public void Run()
         {
-            int key = 1;
-
             while (_open)
             {
-                int amount = _random.Next(1, 4);
+                int amount = _random.Next(1, 3);
                 Person person = new Person(_nameGen, amount);
 
-                TakeBagage(person, key);
-                Thread.Sleep(_random.Next(1500,5000));
+                TakeBagage(person);
+                SendToSorting();
+                //Thread.Sleep(_random.Next(1500, 3000));
+                Thread.Sleep(300);
+
             }
         }
         public void Stop()
@@ -41,16 +48,28 @@ namespace BagageSortering
             _open = false;
         }
 
-        private void TakeBagage(Person person, int key)
+        private void SendToSorting()
         {
-            int randomNr = _random.Next(0, 3);
+            int amount = _queue.Count;
+            for (int i = 0; i < amount; i++)
+            {
+                _queue.Split(_sorting);
+            }
+        }
+
+        private void TakeBagage(Person person)
+        {
+            int randomNr = _random.Next(0, _checkIns);
             for (int i = 0; i < person.BagageAmount; i++)
             {
-                Bagage bagage = new Bagage(person.Name, randomNr, key);
+                Bagage bagage = new Bagage(person.Name, randomNr, $"{_queue.Name}-{_key}");
                 _queue.Produce(bagage);
-                key++;
+                lock (_keyLock)
+                {
+                    _key++;
+                }
             }
-            _box.WriteAt($"{person.Name}|Bagages:{person.BagageAmount}|Gate:{randomNr}| Check-in {_queue.Name}", ConsoleColor.Green);
+            _box.WriteAt($"Bags:{person.BagageAmount}| Gate:{randomNr + 1}| {person.Name}", ConsoleColor.Green);
         }
     }
 }

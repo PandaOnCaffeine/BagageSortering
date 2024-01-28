@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BagageSortering
@@ -22,7 +23,8 @@ namespace BagageSortering
             while (_open)
             {
                 Bagage bagage = _queue.Consume();
-                _box.WriteAt("test", ConsoleColor.DarkBlue);
+                _box.WriteAt($"Gate: {bagage.Gate + 1} | BagageNr: {bagage.Key} | {bagage.Name}", ConsoleColor.DarkBlue);
+                Thread.Sleep(100);
             }
         }
         public void close() { }

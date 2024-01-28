@@ -10,10 +10,10 @@ namespace BagageSortering
     {
         public string Name { get; private set; }
         public int Gate { get; private set; }
-        public int Key { get; private set; }
+        public string Key { get; private set; }
 
 
-        public Bagage(string name, int gate, int key)
+        public Bagage(string name, int gate, string key)
         {
             Name = name;
             Gate = gate;

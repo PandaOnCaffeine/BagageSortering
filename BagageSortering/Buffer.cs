@@ -37,16 +37,21 @@ namespace BagageSortering
         {
             lock (_lock)
             {
+                while (_queue.Count <= 0)
+                {
+                    Monitor.Wait(_lock);
+                }
                 lock (direction._lock)
                 {
                     while (direction.Count >= direction._limit)
                     {
-                        Monitor.Pulse(direction._lock);
                         Monitor.Wait(direction._lock);
                     }
                     Bagage bagage = _queue.Dequeue();
                     direction._queue.Enqueue(bagage);
+                    Monitor.Pulse(direction._lock);
                 }
+                Monitor.Pulse(_lock);
             }
         }
         public Bagage Next()
