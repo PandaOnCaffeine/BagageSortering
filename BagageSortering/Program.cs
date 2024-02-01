@@ -53,6 +53,7 @@ namespace BagageSortering
             int maxGates = 6;
             int checkInsAmount = 3;
             int maxCheckIns = 6;
+            
 
             //Buffer Arrays
             Buffer[] gateBuffers = new Buffer[gateAmount];

@@ -9,6 +9,7 @@ namespace BagageSortering
 {
     internal class Person
     {
+
         public string Name { get; set; }
         public int BagageAmount { get; private set; }
         public Person(Faker test, int amount)
