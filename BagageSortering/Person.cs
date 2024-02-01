@@ -13,7 +13,7 @@ namespace BagageSortering
         public int BagageAmount { get; private set; }
         public Person(Faker test, int amount)
         {
-            Name = test.Name.FullName();
+            Name = test.Name.FullName(new Bogus.DataSets.Name.Gender());
             BagageAmount = amount;
         }
     }

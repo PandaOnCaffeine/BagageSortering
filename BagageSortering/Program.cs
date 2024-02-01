@@ -170,7 +170,7 @@ namespace BagageSortering
                                         miniMenu.WriteAt("Skriv \"Confirm\" To delete a Check in:", ConsoleColor.White);
                                         string confirmText = WriteInMiniMenu(writerLock, xArrowPos + 45, 3);
                                         ResumeThread();
-                                        if (confirmText == "confirm")
+                                        if (confirmText == "Confirm")
                                         {
                                             checkIns[checkInsAmount - 1].Stop();
                                             checkIns[checkInsAmount - 1] = null;
